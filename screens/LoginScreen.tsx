@@ -5,7 +5,8 @@ import PhoneInput from "react-native-phone-number-input";
 // Native Modules
 const { HCEEmitter } = NativeModules;
 
-export default function LoginScreen() {
+//@ts-ignore
+export default function LoginScreen({ navigation }) {
   const [text, setText] = useState("");
 
   return (
@@ -28,6 +29,7 @@ export default function LoginScreen() {
           />
           <View style={{ marginBottom: 10 }}></View>
           <Button title="Login" onPress={() => HCEEmitter.sendMessage(text)} />
+          <Button title="Login" onPress={() => navigation.navigate("Tokens")} />
         </View>
       </View>
     </SafeAreaView>

@@ -1,22 +1,55 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, NativeModules, Button, TextInput } from "react-native";
+import {
+  StatusBar,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  NativeModules,
+  Button,
+  TextInput,
+  FlatList,
+} from "react-native";
+import Item from "../components/Item";
+
+// Native Modules
 const { HCEEmitter } = NativeModules;
+
+const arr = [
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "112128", expire: Date.now(), count: 1 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: undefined, count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: undefined },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "112128", expire: Date.now(), count: 1 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: 2 },
+  { title: "Test", id: "000128", expire: Date.now(), count: undefined },
+];
 
 export default function HomeScreen() {
   const [text, setText] = useState("");
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <Text>Current text: "{text}"</Text>
-      <TextInput
-        placeholder="set text"
-        style={{ padding: 10, backgroundColor: "grey" }}
-        onChangeText={(text) => setText(text)}
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={"#00b4d8"}></StatusBar>
+      <Text style={{ fontSize: 23, fontWeight: "600", marginBottom: 14, marginTop: 14, width: "80%" }}>
+        Select a token:
+      </Text>
+      <FlatList
+        style={{ width: "100%" }}
+        data={arr}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => {
+          return <Item index={index} {...item} />;
+        }}
       />
-      <Button title="Send message" onPress={() => HCEEmitter.sendMessage(text)} />
-      <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
