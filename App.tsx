@@ -1,30 +1,19 @@
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
-import { StyleSheet, Text, View, NativeModules, Button, TextInput } from "react-native";
-const { HCEEmitter } = NativeModules;
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
+// Screens
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+
+const Stack = createStackNavigator();
 export default function App() {
-  const [text, setText] = useState("");
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <Text>Current text: "{text}"</Text>
-      <TextInput
-        placeholder="set text"
-        style={{ padding: 10, backgroundColor: "grey" }}
-        onChangeText={(text) => setText(text)}
-      />
-      <Button title="Send message" onPress={() => HCEEmitter.sendMessage(text)} />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
