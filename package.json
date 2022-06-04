@@ -1,5 +1,5 @@
 {
-  "name": "ONAPP!",
+  "name": "open-nfc-emitter",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start --dev-client",
@@ -9,9 +9,12 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.6",
     "@react-native-masked-view/masked-view": "^0.2.6",
+    "@react-navigation/elements": "^1.3.3",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/stack": "^6.2.1",
+    "@reduxjs/toolkit": "^1.8.2",
     "expo": "~45.0.0",
     "expo-splash-screen": "~0.15.1",
     "expo-status-bar": "~1.3.0",
@@ -22,7 +25,11 @@
     "react-native-phone-number-input": "^2.1.0",
     "react-native-safe-area-context": "^4.2.5",
     "react-native-screens": "^3.13.1",
-    "react-native-web": "0.17.7"
+    "react-native-web": "0.17.7",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1",
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^4.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
