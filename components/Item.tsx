@@ -33,7 +33,7 @@ export default function Item(props: any) {
           return;
         }
         console.log("sending info: " + JSON.stringify(props));
-        const token = { userId: props.userId, id: props.id };
+        const token = { userId: props.userId, id: props.id, class: props.class };
 
         setShowModal(true);
         HCEEmitter.sendMessage(JSON.stringify(token));
