@@ -3,7 +3,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const LOGIN_SUCCESFUL = "LOGIN_SUCCESFUL";
 
-export const login = (email: string | null, password: string | undefined, session: string | null) => {
+export const login = (
+  email: string | null,
+  password: string | undefined,
+  session: string | null,
+  isSignup: boolean
+) => {
   return async (dispatch: any, getState: any) => {
     return new Promise((resolve, reject) => {
       console.log("login");
@@ -11,7 +16,8 @@ export const login = (email: string | null, password: string | undefined, sessio
 
       if (!socket.isConnected) throw new Error("Not connected");
 
-      socket.socket.emit("user:login", { email: email, password: password, session: session }, (response: any) => {
+      var query = isSignup ? "user:signup" : "user:login";
+      socket.socket.emit(query, { email: email, password: password, session: session }, (response: any) => {
         console.log("login response:", response);
         if (response.ok) {
           //@ts-ignore
@@ -47,7 +53,7 @@ export const reload = (navigation: any) => {
           const session = await AsyncStorage.getItem("session");
           const userId = await AsyncStorage.getItem("userId");
 
-          await dispatch(login(email, undefined, session));
+          await dispatch(login(email, undefined, session, false));
           navigation.navigate("Tokens", { a: "" });
         } catch (err) {
           console.log(err);

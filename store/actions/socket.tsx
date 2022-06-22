@@ -9,7 +9,7 @@ export const connectToSocket = () => {
   return async (dispatch: any, getState: any) => {
     const PORT = 4002;
     // prettier-ignore
-    const DOMAIN = (__DEV__ ? "http://192.168.1.88:" : "https://securpicks.com:") + PORT.toString();
+    const DOMAIN = (!__DEV__ ? "http://192.168.1.88:" : ":") + PORT.toString();
 
     console.log("Connecting socket...");
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Modal, NativeModules, StyleSheet, Text, View, Pressable, Alert, ToastAndroid } from "react-native";
+import { Modal, NativeModules, Linking, StyleSheet, Text, View, Pressable, Alert, ToastAndroid } from "react-native";
 import { useSelector } from "react-redux";
 import Button from "./Button";
+import NfcManager from "react-native-nfc-manager";
 
 const { HCEEmitter } = NativeModules;
 
@@ -28,15 +29,38 @@ export default function Item(props: any) {
   return (
     <Pressable
       onPress={() => {
-        if (expired) {
-          ToastAndroid.show("You can't use a expired token", 1000);
-          return;
-        }
-        console.log("sending info: " + JSON.stringify(props));
-        const token = { userId: props.userId, id: props.id, class: props.class };
+        const aFunction = async () => {
+          if (expired) {
+            ToastAndroid.show("No puedes usar un token expirado", 1000);
+            return;
+          }
 
-        setShowModal(true);
-        HCEEmitter.sendMessage(JSON.stringify(token));
+          if (!(await NfcManager.isEnabled())) {
+            Alert.alert("⚠️ Error", "Tienes que activar NFC", [
+              {
+                text: "CANCELAR",
+              },
+              {
+                text: "ACTIVAR",
+                onPress: () => {
+                  NfcManager.goToNfcSetting();
+                },
+              },
+            ]);
+            return;
+          }
+          if (!(await NfcManager.isSupported())) {
+            Alert.alert("⚠️ Error", "Tu dispositivo no soporta NFC");
+            return;
+          }
+          console.log("sending info: " + JSON.stringify(props));
+          const token = { userId: props.userId, id: props.id, class: props.class };
+
+          setShowModal(true);
+          HCEEmitter.sendMessage(JSON.stringify(token));
+          props.onPress();
+        };
+        aFunction();
       }}
       onPressIn={() => {
         setBackground("#cecece");
@@ -54,10 +78,10 @@ export default function Item(props: any) {
       <Modal transparent={true} animationType="slide" visible={showModal}>
         <View style={{ flex: 2, backgroundColor: "rgba(0,0,0,0.0)" }}></View>
         <View style={styles.topModalContainer}>
-          <Text style={{ fontWeight: "600", fontSize: 20, marginBottom: 10 }}>Approach the NFC reader</Text>
-          <Text style={{ fontSize: 16, marginBottom: 30 }}>Sending info for "{props.title}"...</Text>
+          <Text style={{ fontWeight: "600", fontSize: 20, marginBottom: 10 }}>Acerca el lector NFC</Text>
+          <Text style={{ fontSize: 16, marginBottom: 30 }}>Enviando contenido de "{props.title}"...</Text>
           <Button
-            title="cancel"
+            title="cancelar"
             onPress={() => {
               setShowModal(false);
             }}

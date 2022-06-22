@@ -23,7 +23,7 @@ export default function StartupScreen({ navigation }) {
       if (socketStore.isConnected) {
         const email = await AsyncStorage.getItem("email");
         const session = await AsyncStorage.getItem("session");
-        const response = await dispatch(login(email, undefined, session));
+        const response = await dispatch(login(email, undefined, session, false));
         //@ts-ignore
         if (response.ok) {
           navigation.navigate("Tokens");
